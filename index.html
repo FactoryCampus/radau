@@ -1,0 +1,9 @@
+<link href="//unpkg.com/swagger-ui-dist@3/swagger-ui.css" rel="stylesheet">
+<div id="swagger-ui"></div>
+<script src="//unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
+<script>
+    const ui = SwaggerUIBundle({
+        url: "https://raw.githubusercontent.com/FactoryCampus/wifi-login-backend/develop/openapi.yml",
+        dom_id: '#swagger-ui',
+    });
+</script>
