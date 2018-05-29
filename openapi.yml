@@ -101,15 +101,15 @@ paths:
         404:
           description: User not found
 
-  /radius:
+  /radius/{username}:
     get:
       summary: Get info for radius auth
       parameters:
-        - in: query
-          name: realm
+        - in: path
+          name: username
           type: string
           required: true
-          description: The user realm to query
+          description: The username to query user info for
       responses:
         200:
           description: The full user info including a token if available
