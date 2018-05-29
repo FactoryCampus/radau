@@ -117,8 +117,10 @@ paths:
           description: Radius attributes
           schema:
             $ref: '#/definitions/RadiusInfo'
+        401:
+          description: No token available
         404:
-          description: User not found or no token available
+          description: User not found
 
 securityDefinitions:
   api_key:
