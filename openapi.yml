@@ -132,9 +132,6 @@ definitions:
       username:
         type: string
         description: Usually an email address
-      token:
-        type: string
-        description: Login password used in WPA Enterprise
       extraProperties:
         type: object
         description: Extra radius properties
