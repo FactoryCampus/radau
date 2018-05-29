@@ -71,9 +71,10 @@ paths:
         200:
           description: Token created
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/TokenOnly'
         404:
           description: User not found
+
   /radius:
     get:
       summary: Get info for radius auth
@@ -127,3 +128,10 @@ definitions:
       extraProperties:
         type: object
         description: Extra radius properties
+  TokenOnly:
+    type: object
+    required: ['token']
+    properties:
+      token:
+        description: The token of a certain user
+        type: string
