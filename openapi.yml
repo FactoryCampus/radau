@@ -112,9 +112,9 @@ paths:
           description: The username to query user info for
       responses:
         200:
-          description: The full user info including a token if available
+          description: Radius attributes
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/RadiusInfo'
         404:
           description: User not found or no token available
 
@@ -157,4 +157,10 @@ definitions:
     properties:
       token:
         description: The token of a certain user
+        type: string
+  RadiusInfo:
+    type: object
+    properties:
+      "control:Cleartext-Password":
+        description: The user token prepared for radius
         type: string
