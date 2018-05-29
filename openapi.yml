@@ -58,16 +58,15 @@ paths:
         404:
           description: USer not found by username
 
-  /token:
+  /token/{username}:
     post:
       summary: Create a new token for a user
       parameters:
-        - in: body
-          name: body
-          description: User association for new token
+        - in: path
+          name: username
+          type: string
           required: true
-          schema:
-            $ref: '#/definitions/TokenCreation'
+          description: The username to create the token for
       responses:
         200:
           description: Token created
@@ -128,10 +127,3 @@ definitions:
       extraProperties:
         type: object
         description: Extra radius properties
-  TokenCreation:
-    type: object
-    required: ['username']
-    properties:
-      username:
-        description: The user to create a token for
-        type: string
