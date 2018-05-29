@@ -148,13 +148,13 @@ definitions:
         description: The user identification to use
       extraProperties:
         type: object
-        description: Extra radius properties
+        description: Extra radius properties to assign to the new user
   UserUpdate:
     type: object
     properties:
       extraProperties:
         type: object
-        description: Extra radius properties
+        description: Extra radius properties to update. *Will override all existing properties!*
   TokenOnly:
     type: object
     required: ['token']
