@@ -5,7 +5,7 @@ COPY main.go $SRCPATH/
 COPY internal $SRCPATH/internal
 
 WORKDIR $SRCPATH
-RUN go get -d
+RUN go get -v -d
 
 ENV CGO_ENABLED=0
 ENV GOOS=linux
