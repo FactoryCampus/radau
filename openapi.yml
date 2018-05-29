@@ -56,7 +56,7 @@ paths:
           schema:
             $ref: '#/definitions/User'
         404:
-          description: USer not found by username
+          description: User not found by username
     delete:
       summary: Delete user
       parameters:
@@ -64,7 +64,7 @@ paths:
           name: username
           type: string
           required: true
-          description: The username to query
+          description: The username of the user to delete
       responses:
         204:
           description: User has been deleted
