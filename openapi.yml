@@ -57,6 +57,19 @@ paths:
             $ref: '#/definitions/User'
         404:
           description: USer not found by username
+    delete:
+      summary: Delete user
+      parameters:
+        - in: path
+          name: username
+          type: string
+          required: true
+          description: The username to query
+      responses:
+        204:
+          description: User has been deleted
+        404:
+          description: User not found
 
   /token/{username}:
     post:
@@ -72,6 +85,19 @@ paths:
           description: Token created
           schema:
             $ref: '#/definitions/TokenOnly'
+        404:
+          description: User not found
+    delete:
+      summary: Delete a user's token. This will result in disabling login for that user
+      parameters:
+        - in: path
+          name: username
+          type: string
+          required: true
+          description: The username to delete the token for
+      responses:
+        204:
+          description: Token deleted
         404:
           description: User not found
 
