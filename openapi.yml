@@ -152,6 +152,9 @@ definitions:
   UserUpdate:
     type: object
     properties:
+      username:
+        type: string
+        description: Updated user identification to assign to the user
       extraProperties:
         type: object
         description: Extra radius properties to update. *Will override all existing properties!*
