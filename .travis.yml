@@ -1,0 +1,36 @@
+language: go
+go:
+  - "1.10"
+
+sudo: required
+services:
+  - docker
+
+env:
+  global:
+    - IMAGE_NAME=factorycampus/wifilogin
+    - REGISTRY_USER=factorycampusci
+    - secure: "sdcbqokGaLqQwAkOV/UC6TZwBpjcveVsGk48AcOJfnPEi/h4LbZ0sGVP6BsSjw1NkBjQO8AhABHXR8OuFyrCIe0gjrxR9jhJXvd5OTsHO9UnTcemKhlthbXnDjJG0ArcbfVAj74lfmPZGVfFZgRhHtNz5W2rqCdAhqj3EXaCPFPXOjo82bzYZq+NveZxkzlAKO2E52s669e+WZ/mL35zcxKBVlZ8l3b33zgEIv256CMqdagpPh5Prrf53vjkaw/Qcwa6bO7BmZZJo5HRCC50QdG1mhRG1JeKQc46orxL85bxh14CMA3321tIriljuyt20IoCyxuxDj7cRmJE8ptXgiKZoiRwNNROU+5NIPD1r5ZDpt8M+uCgnV/tsdDL4a6Dg5oUTQbPjMashsPyCTllD3RWKM7RTFRitVerVqWlk1VHdGBz61fxX8zTO1hnVwHkR7ZuZmjtOtoc0HTuWR2E0N4nuRKYOxINYFdErfOahbotBDjJntCydrbEDs3wPlZ4N25rm6I1/yh4Eb8oaeehhNguKJGsJrbldw+BQRpzKm0XjDZjr/6WXs9Gy9IHd6rMP1vloSB47QHnTsMWsKE0bvcVskeK7/WgIcjBEjDo81vo+F1Zy2sdQdICX8bB5rK4ukjeKFlW75NDjl7jjdCorPRLqSt2OQ0622dQLLpHWik="
+
+go_import_path: "../../src"
+
+install:
+  - go get -v -d
+
+after_success:
+  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+  - if [ ! -z $TRAVIS_TAG]; then docker tag "$IMAGE_NAME" "${IMAGE_NAME}:$TRAVIS_TAG"; fi
+
+deploy:
+  - provider: script
+    script: docker push "${IMAGE_NAME}:latest"
+    on:
+      branch: develop
+  - provider: script
+    script: docker push "${IMAGE_NAME}:$TRAVIS_TAG"
+    on:
+      tags: true
