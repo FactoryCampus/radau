@@ -1,0 +1,38 @@
+version: "3"
+
+networks:
+  db:
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: scripts/dev.Dockerfile
+    volumes:
+      - .:/src
+      - go_cache:/go
+    environment:
+      DB_HOST: db
+      DB_USER: wifi
+      DB_PASSWORD: wifi
+      DB_DATABASE: wifi
+      API_KEY_MANAGEMENT: pYWVcrR4DmgCfkfmEte5nGNW
+      API_KEY_RADIUS: u39fNShDX6fAeXtWY6bZWY9x
+    ports:
+      - "8080:8080"
+    networks:
+      - db
+  db:
+    image: postgres:10
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - db
+    environment:
+      POSTGRES_USER: wifi
+      POSTGRES_PASSWORD: wifi
+      POSTGRES_DB: wifi
+
+volumes:
+  db_data:
+  go_cache:
