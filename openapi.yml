@@ -171,3 +171,6 @@ definitions:
       "control:Cleartext-Password":
         description: The user token prepared for radius
         type: string
+    additionalProperties:
+      description: Extra Radius properties assigned to the user
+      type: string
