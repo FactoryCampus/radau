@@ -51,6 +51,12 @@ paths:
           schema:
             $ref: '#/definitions/UserUpdate'
       responses:
+        200:
+          description: User has been changed
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: USer not found by username
 
   /token:
     post:
