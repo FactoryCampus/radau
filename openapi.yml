@@ -21,6 +21,8 @@ paths:
           description: User which was created
           schema:
             $ref: "#/definitions/User"
+        422:
+          description: User already exists
 
   /user/{username}:
     get:
