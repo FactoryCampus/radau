@@ -58,7 +58,9 @@ func main() {
 	tokenRoutes := r.Group("/token", pkg.HandleApiKeyAuth(authManagementKey))
 	pkg.InitTokenHandler(tokenRoutes, db)
 
-	radiusRoutes := r.Group("/radius", pkg.HandleApiKeyAuth(authRadiusKey))
+	radiusRoutes := r.Group("/radius", gin.BasicAuth(gin.Accounts{
+		"Radius": authRadiusKey,
+	}))
 	pkg.InitRadiusHandler(radiusRoutes, db)
 
 	r.Run()
