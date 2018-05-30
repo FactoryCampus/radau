@@ -5,6 +5,10 @@ go:
 sudo: required
 services:
   - docker
+addons:
+  apt:
+    packages:
+      - fakeroot
 
 env:
   global:
@@ -19,14 +23,8 @@ install:
   - go get -v -d
 
 after_success:
-  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
-  - echo "$REGISTRY_PASS" | docker login -u "$REGISTRY_USER" --password-stdin
-  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-  - if [ ! -z $TRAVIS_TAG ]; then docker tag "$IMAGE_NAME" "${IMAGE_NAME}:$TRAVIS_TAG"; fi
-
-  - mkdir -p build/$DEBIAN_ARCH && GOARCH=$DEBIAN_ARCH go build -o build/$DEBIAN_ARCH/wifi-login-backend
-  - go get -v -u github.com/mh-cbon/go-bin-deb
-  - if [ ! -z $TRAVIS_TAG ]; then go-bin-deb generate --version $TRAVIS_TAG; else go-bin-deb generate; fi
+  - scripts/build-docker.sh
+  - scripts/build-debian.sh
 
 deploy:
   - provider: script
@@ -34,9 +32,15 @@ deploy:
     on:
       branch: develop
   - provider: script
-    script: docker push "${IMAGE_NAME}:$TRAVIS_TAG"
+    script: docker push "${IMAGE_NAME}:${TRAVIS_TAG}"
     on:
       tags: true
+  - provider: script
+    script:
+      - docker push "${IMAGE_NAME}:${TRAVIS_COMMIT}"
+      - docker push "${IMAGE_NAME}:git-${TRAVIS_BRANCH}"
+    on:
+      all_branches: true
   - provider: releases
     api_key:
       secure: "TKMIBzNhScGX/GziDY9uNwuIiU4d9KzZ2+s6iY0h//YqCh8KIyNAQGZmJbDjeySILANhlY6GLtVQ645OWcBxy57P5btmDw2O7skAqnWs9k71Nv2JFToZ3hdpGpIRS70UJFbqpL6SSkn2r3H6DEk4lcay3S8H9TucHd24DX104bP218DL3jbweAsEw+wlQvJfXe90WbA7mSQuvim4LmYUKJKs9OXe3F7a6XHSLvlE/z92KfPSgTSXgXmJoCZti4gy+ZJBskp7/K/7/MtRVOKNk+njm8X0SYmy2GMizsWsPcQn5YLrbdZFjNl8Pm8j6B1R/VoMmilhwCeGP6BeAzdx6saM8PFbwOuqUWdcc/8fTZEv2TtfKZAXghqAH1na3SA9ZEzdzHdmOKKN4h8uA5adPjhxCafwl60MT0L/stCfCa5hqqsIgI0ZGY6NqSJlvhNw41gPAEa/DeEv6hKEyl9O2YwJd8hP5TKDp5y2vT3hFqY4Nw9GxIBBs6USaxQd9vlSgdVC6tQFay1d4j8G0VZYYbWJKBKYtylx2cpNmMIul29pBS554OcS8z65s1td0Potaa/jYMT60CaqBrunYkiWhgo3Ctf8xy7EwQvOr2UaueTD0Tec5K815cBtZdF5IcsQfIyR0L1CviCQ1Rv/b3F33GHVWLa4nAm70xIGbHdHUMY="

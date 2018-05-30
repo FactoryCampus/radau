@@ -2,7 +2,6 @@
     "name": "wifi-login-backend",
     "version": "develop",
     "maintainer": "Marcus Weiner <marcus.weiner@gmail.com>",
-    "arch": "amd64",
     "description": "Authentification microservice for FreeRadius",
     "homepage": "http://github.com/factorycampus/!name!",
     "files": [
