@@ -11,6 +11,7 @@ env:
     - IMAGE_NAME=factorycampus/wifilogin
     - REGISTRY_USER=factorycampusci
     - secure: "sdcbqokGaLqQwAkOV/UC6TZwBpjcveVsGk48AcOJfnPEi/h4LbZ0sGVP6BsSjw1NkBjQO8AhABHXR8OuFyrCIe0gjrxR9jhJXvd5OTsHO9UnTcemKhlthbXnDjJG0ArcbfVAj74lfmPZGVfFZgRhHtNz5W2rqCdAhqj3EXaCPFPXOjo82bzYZq+NveZxkzlAKO2E52s669e+WZ/mL35zcxKBVlZ8l3b33zgEIv256CMqdagpPh5Prrf53vjkaw/Qcwa6bO7BmZZJo5HRCC50QdG1mhRG1JeKQc46orxL85bxh14CMA3321tIriljuyt20IoCyxuxDj7cRmJE8ptXgiKZoiRwNNROU+5NIPD1r5ZDpt8M+uCgnV/tsdDL4a6Dg5oUTQbPjMashsPyCTllD3RWKM7RTFRitVerVqWlk1VHdGBz61fxX8zTO1hnVwHkR7ZuZmjtOtoc0HTuWR2E0N4nuRKYOxINYFdErfOahbotBDjJntCydrbEDs3wPlZ4N25rm6I1/yh4Eb8oaeehhNguKJGsJrbldw+BQRpzKm0XjDZjr/6WXs9Gy9IHd6rMP1vloSB47QHnTsMWsKE0bvcVskeK7/WgIcjBEjDo81vo+F1Zy2sdQdICX8bB5rK4ukjeKFlW75NDjl7jjdCorPRLqSt2OQ0622dQLLpHWik="
+    - DEBIAN_ARCH=amd64
 
 go_import_path: "../../src"
 
@@ -23,6 +24,10 @@ after_success:
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
   - if [ ! -z $TRAVIS_TAG ]; then docker tag "$IMAGE_NAME" "${IMAGE_NAME}:$TRAVIS_TAG"; fi
 
+  - mkdir -p build/$DEBIAN_ARCH && GOARCH=$DEBIAN_ARCH go build -o build/$DEBIAN_ARCH/wifi-login-backend
+  - go get -v -u github.com/mh-cbon/go-bin-deb
+  - if [ ! -z $TRAVIS_TAG ]; then go-bin-deb generate --version $TRAVIS_TAG; else go-bin-deb generate; fi
+
 deploy:
   - provider: script
     script: docker push "${IMAGE_NAME}:latest"
@@ -30,5 +35,12 @@ deploy:
       branch: develop
   - provider: script
     script: docker push "${IMAGE_NAME}:$TRAVIS_TAG"
+    on:
+      tags: true
+  - provider: releases
+    api_key:
+      secure: "TKMIBzNhScGX/GziDY9uNwuIiU4d9KzZ2+s6iY0h//YqCh8KIyNAQGZmJbDjeySILANhlY6GLtVQ645OWcBxy57P5btmDw2O7skAqnWs9k71Nv2JFToZ3hdpGpIRS70UJFbqpL6SSkn2r3H6DEk4lcay3S8H9TucHd24DX104bP218DL3jbweAsEw+wlQvJfXe90WbA7mSQuvim4LmYUKJKs9OXe3F7a6XHSLvlE/z92KfPSgTSXgXmJoCZti4gy+ZJBskp7/K/7/MtRVOKNk+njm8X0SYmy2GMizsWsPcQn5YLrbdZFjNl8Pm8j6B1R/VoMmilhwCeGP6BeAzdx6saM8PFbwOuqUWdcc/8fTZEv2TtfKZAXghqAH1na3SA9ZEzdzHdmOKKN4h8uA5adPjhxCafwl60MT0L/stCfCa5hqqsIgI0ZGY6NqSJlvhNw41gPAEa/DeEv6hKEyl9O2YwJd8hP5TKDp5y2vT3hFqY4Nw9GxIBBs6USaxQd9vlSgdVC6tQFay1d4j8G0VZYYbWJKBKYtylx2cpNmMIul29pBS554OcS8z65s1td0Potaa/jYMT60CaqBrunYkiWhgo3Ctf8xy7EwQvOr2UaueTD0Tec5K815cBtZdF5IcsQfIyR0L1CviCQ1Rv/b3F33GHVWLa4nAm70xIGbHdHUMY="
+    file: "wifi-login-backend_${TRAVIS_TAG}_${DEBIAN_ARCH}.deb"
+    skip_cleanup: true
     on:
       tags: true
