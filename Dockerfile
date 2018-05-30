@@ -1,4 +1,6 @@
-FROM golang AS builder
+FROM golang:1.10-alpine AS builder
+
+RUN apk --no-cache add git
 
 ENV SRCPATH /src
 COPY main.go $SRCPATH/
