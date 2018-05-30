@@ -1,6 +1,6 @@
-# Wifi Login Backend
+# `radau` - Radius authentication backend
 
-A microservice used to manage users and credentials for authentication in a WPA Enterprise setup. The credentials are ready to be passed to a radius server, e.g. the FreeRadius `rest` module.
+Radius Authentication REST backend microservice used to manage users and credentials for authentication in a WPA Enterprise setup. The credentials are ready to be passed to a radius server, e.g. the FreeRadius `rest` module.
 
 [📝 API docs](https://factorycampus.github.io/wifi-login-backend/)
 
