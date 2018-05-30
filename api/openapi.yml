@@ -106,6 +106,8 @@ paths:
   /radius/{username}:
     get:
       summary: Get info for radius auth
+      security:
+        - ApiKeyRadius: []
       parameters:
         - in: path
           name: username
@@ -123,10 +125,14 @@ paths:
           description: User not found
 
 securityDefinitions:
-  api_key:
+  Management:
+    description: API key used for managing users and tokens
     type: apiKey
-    name: api_key
+    name: Authorization
     in: header
+  Radius:
+    description: Authorization for radius rest module to fetch user info. Username "Radius"
+    type: basic
 
 definitions:
   User:
