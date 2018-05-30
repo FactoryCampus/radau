@@ -21,4 +21,4 @@ EXPOSE 8080
 
 COPY --from=builder /src/build/radau radau
 
-CMD ["./wifilogin"]
+ENTRYPOINT [ "./radau" ]
