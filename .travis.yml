@@ -35,8 +35,6 @@ deploy:
     on:
       tags: true
   - provider: script
-    script:
-      - docker push "${IMAGE_NAME}:${TRAVIS_COMMIT}"
-      - docker push "${IMAGE_NAME}:git-${TRAVIS_BRANCH}"
+    script: docker push "${IMAGE_NAME}:${TRAVIS_COMMIT}"; docker push "${IMAGE_NAME}:git-${TRAVIS_BRANCH}"
     on:
       all_branches: true
