@@ -1,7 +1,7 @@
 swagger: "2.0"
 
 info:
-  title: WiFi Login Service
+  title: radau - WiFi Login Service
   description: A micro-service backend used to generate and verify tokens for WPA Enterprise setups
   version: "0.1.0"
 
