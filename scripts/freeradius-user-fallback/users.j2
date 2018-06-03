@@ -1,0 +1,7 @@
+{% for user in users %}
+{% if user.token %}
+{{ user.username }}
+    Cleartext-Password := "{{ user.token }}"{% if user.extraProperties %}{% for key, val in user.extraProperties.items() %}, {{ key }} := {{ val }}{% endfor %}{% endif %}
+
+{% endif %}
+{% endfor %}

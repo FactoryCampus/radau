@@ -1,0 +1,18 @@
+#!/usr/bin/env ansible-playbook
+
+- hosts: localhost
+  tasks:
+    - name: Fetch users from api
+      uri:
+        url: "http://localhost:8080/users"
+        return_content: yes
+        headers:
+          Authorization: pYWVcrR4DmgCfkfmEte5nGNW
+      register: api_response
+
+    - set_fact: users="{{ api_response.json.users }}"
+
+    - name: Create users file for FreeRadius
+      template:
+        src: users.j2
+        dest: $PWD/users.tmp
