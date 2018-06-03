@@ -11,6 +11,26 @@ produces:
   - application/json; charset=utf-8
 
 paths:
+  /users:
+    get:
+      summary: Get all users
+      parameters:
+        - in: query
+          name: limit
+          description: Limits number of returned users by this value
+          type: number
+        - in: query
+          name: offset
+          description: Sets the offset for a limited number of users
+          type: number
+      responses:
+        200:
+          description: All users (optionally a limited amount)
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+
   /user:
     post:
       summary: Create a new user

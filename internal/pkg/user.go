@@ -27,6 +27,8 @@ func InitUserHandler(router gin.IRouter, db *pg.DB) {
 		db: db,
 	}}
 
+	router.GET("/users", h.getUsers)
+
 	group := router.Group("/user")
 	{
 		group.POST("", h.createUser)
@@ -41,6 +43,28 @@ func serializeUser(user *User) gin.H {
 		"username":        user.Username,
 		"extraProperties": user.ExtraProperties,
 	}
+}
+
+func (h *userHandler) getUsers(c *gin.Context) {
+	limit := c.GetInt("limit")
+	offset := c.GetInt("offset")
+
+	userList := []gin.H{}
+	h.db.Model(&User{}).
+		Limit(limit).
+		Offset(offset).
+		ForEach(func(u *User) error {
+			userList = append(userList, gin.H{
+				"username":        u.Username,
+				"extraProperties": u.ExtraProperties,
+				"token":           u.Token,
+			})
+			return nil
+		})
+	c.JSON(200, gin.H{
+		"users":     &userList,
+		"userCount": len(userList),
+	})
 }
 
 func (h *userHandler) createUser(c *gin.Context) {
