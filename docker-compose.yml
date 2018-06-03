@@ -10,7 +10,7 @@ services:
       dockerfile: scripts/dev.Dockerfile
     volumes:
       - .:/src
-      - go_cache:/go
+      - go_cache:/go/src
     environment:
       DB_HOST: db
       DB_USER: wifi

@@ -1,7 +1,7 @@
 # Dockerfile used for development with livereload
 FROM golang
 
-ENV GOPATH /src:/go
+ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && \
