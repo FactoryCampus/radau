@@ -22,15 +22,18 @@ type UserCreation struct {
 	ExtraProperties map[string]string `json:"extraProperties"`
 }
 
-func InitUserHandler(router gin.IRoutes, db *pg.DB) {
+func InitUserHandler(router gin.IRouter, db *pg.DB) {
 	h := &userHandler{&baseHandler{
 		db: db,
 	}}
 
-	router.POST("", h.createUser)
-	router.GET("/:username", h.getUser)
-	router.PUT("/:username", h.updateUser)
-	router.DELETE("/:username", h.deleteUser)
+	group := router.Group("/user")
+	{
+		group.POST("", h.createUser)
+		group.GET("/:username", h.getUser)
+		group.PUT("/:username", h.updateUser)
+		group.DELETE("/:username", h.deleteUser)
+	}
 }
 
 func serializeUser(user *User) gin.H {

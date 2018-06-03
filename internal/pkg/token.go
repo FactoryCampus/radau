@@ -11,13 +11,16 @@ type tokenHandler struct {
 	*baseHandler
 }
 
-func InitTokenHandler(router gin.IRoutes, db *pg.DB) {
+func InitTokenHandler(router gin.IRouter, db *pg.DB) {
 	h := &tokenHandler{&baseHandler{
 		db: db,
 	}}
 
-	router.POST("/:username", h.createToken)
-	router.DELETE("/:username", h.deleteToken)
+	group := router.Group("/token")
+	{
+		group.POST("/:username", h.createToken)
+		group.DELETE("/:username", h.deleteToken)
+	}
 }
 
 const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
