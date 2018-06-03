@@ -60,6 +60,7 @@ func main() {
 
 	radiusRoutes := r.Group("/radius", gin.BasicAuth(gin.Accounts{
 		"Radius": authRadiusKey,
+		"radius": authRadiusKey,
 	}))
 	pkg.InitRadiusHandler(radiusRoutes, db)
 

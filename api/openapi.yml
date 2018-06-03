@@ -135,7 +135,7 @@ securityDefinitions:
     type: apiKey
     name: Authorization
     in: header
-  Radius:
+  radius:
     description: Authorization for radius rest module to fetch user info. Username "Radius"
     type: basic
 
