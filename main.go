@@ -32,10 +32,11 @@ func createSchema(db *pg.DB) error {
 
 func main() {
 	db := pg.Connect(&pg.Options{
-		Addr:     fmt.Sprintf("%s:5432", os.Getenv("DB_HOST")),
-		User:     os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
-		Database: os.Getenv("DB_DATABASE"),
+		Addr:       fmt.Sprintf("%s:5432", os.Getenv("DB_HOST")),
+		User:       os.Getenv("DB_USER"),
+		Password:   os.Getenv("DB_PASSWORD"),
+		Database:   os.Getenv("DB_DATABASE"),
+		MaxRetries: 4,
 	})
 	defer db.Close()
 
