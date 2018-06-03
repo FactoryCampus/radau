@@ -5,6 +5,11 @@ info:
   description: A micro-service backend used to generate and verify tokens for WPA Enterprise setups
   version: "0.1.0"
 
+consumes:
+  - application/json; charset=utf-8
+produces:
+  - application/json; charset=utf-8
+
 paths:
   /user:
     post:
