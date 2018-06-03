@@ -27,9 +27,16 @@ paths:
         200:
           description: All users (optionally a limited amount)
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/User"
+            type: object
+            properties:
+              users:
+                description: The users in the database
+                type: array
+                items:
+                  $ref: "#/definitions/User"
+              userCount:
+                description: The number of returned users
+                type: number
 
   /user:
     post:
