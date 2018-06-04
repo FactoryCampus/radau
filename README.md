@@ -45,6 +45,7 @@ A debian package is available on the GitHub release page.
 - `DB_PASSWORD` - Password for database access
 - `DB_DATABASE` - Database to use
 - `PORT` - Port to serve the API on
+- `TOKEN_LENGTH` - Length of the generated token, defaults to 32
 
 ### In Production
 

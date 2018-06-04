@@ -2,6 +2,8 @@ package pkg
 
 import (
 	"crypto/rand"
+	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
@@ -42,7 +44,17 @@ func (h *tokenHandler) createToken(c *gin.Context) {
 		return
 	}
 
-	user.Token = randString(32)
+	tokenLength := 32
+
+	tokenLengthStr, tokenLengthExists := os.LookupEnv("TOKEN_LENGTH")
+	if tokenLengthExists {
+		tokenLengthParsed, err := strconv.Atoi(tokenLengthStr)
+		if err == nil {
+			tokenLength = tokenLengthParsed
+		}
+	}
+
+	user.Token = randString(tokenLength)
 
 	err := h.db.Update(user)
 	if err != nil {
