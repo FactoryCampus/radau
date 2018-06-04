@@ -29,8 +29,7 @@ const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567
 const charMask = 1<<6 - 1 // 64-bit mask
 
 func randString(n int) string {
-	bufferSize := int(float64(n) * 1.3)
-	result := make([]byte, bufferSize)
+	result := make([]byte, n)
 	rand.Read(result)
 	for i := range result {
 		result[i] = characters[int(result[i]&charMask)%len(characters)]
