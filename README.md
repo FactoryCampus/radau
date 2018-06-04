@@ -27,7 +27,7 @@ docker run -d --name wifilogin_db --network wifi_db \
     postgres
 docker run -d --name wifilogin \
     -e API_KEY_MANAGEMENT= -e API_KEY_RADIUS= \
-    -e DB_HOST=wifilogin_db -e DB_USER=wifi -e DB_PASS=wifi -e DB_DATABASE=wifi \
+    -e DB_HOST=wifilogin_db -e DB_USER=wifi -e DB_PASSWORD=wifi -e DB_DATABASE=wifi \
     -p 8080:8080 --network wifi_db
     factorycampus/wifi-login-backend
 ```
@@ -42,7 +42,7 @@ A debian package is available on the GitHub release page.
 - `API_KEY_RADIUS` - API Key used by radius server (`/radius`)
 - `DB_HOST` - Host of the database server
 - `DB_USER` - User for database access
-- `DB_PASS` - Password for database access
+- `DB_PASSWORD` - Password for database access
 - `DB_DATABASE` - Database to use
 - `PORT` - Port to serve the API on
 
