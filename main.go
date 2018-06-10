@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"./internal/pkg"
+	"github.com/factorycampus/radau/api"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
@@ -21,7 +21,7 @@ func createSchema(db *pg.DB) error {
 		}
 	}
 
-	for _, model := range []interface{}{(*pkg.User)(nil)} {
+	for _, model := range []interface{}{(*api.User)(nil)} {
 		err := db.CreateTable(model, tableOpts)
 		if err != nil {
 			return err
@@ -53,15 +53,15 @@ func main() {
 
 	r := gin.Default()
 
-	managementAuthed := r.Group("", pkg.HandleApiKeyAuth(authManagementKey))
-	pkg.InitUserHandler(managementAuthed, db)
-	pkg.InitTokenHandler(managementAuthed, db)
+	managementAuthed := r.Group("", api.HandleApiKeyAuth(authManagementKey))
+	api.InitUserHandler(managementAuthed, db)
+	api.InitTokenHandler(managementAuthed, db)
 
 	radiusRoutes := r.Group("/radius", gin.BasicAuth(gin.Accounts{
 		"Radius": authRadiusKey,
 		"radius": authRadiusKey,
 	}))
-	pkg.InitRadiusHandler(radiusRoutes, db)
+	api.InitRadiusHandler(radiusRoutes, db)
 
 	r.Run()
 }

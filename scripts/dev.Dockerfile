@@ -8,6 +8,6 @@ RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && \
     chmod -R 777 "$GOPATH" && \
     go get github.com/tockins/realize
 
-WORKDIR /src
+WORKDIR /go/src/github.com/factorycampus/radau
 ENTRYPOINT ["./scripts/docker-entrypoint.sh"]
 CMD ["realize", "start", "--no-config", "--legacy", "--run"]

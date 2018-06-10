@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: scripts/dev.Dockerfile
     volumes:
-      - .:/src
+      - .:/go/src/github.com/factorycampus/radau
       - go_cache:/go/src
     environment:
       DB_HOST: db

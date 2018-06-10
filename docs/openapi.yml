@@ -65,6 +65,7 @@ paths:
           type: string
           required: true
           description: The username to query
+          x-example: maggy
       responses:
         200:
           description: User object
@@ -80,6 +81,7 @@ paths:
           type: string
           required: true
           description: The username to query
+          x-example: maggy
         - in: body
           name: body
           schema:
@@ -99,6 +101,7 @@ paths:
           type: string
           required: true
           description: The username of the user to delete
+          x-example: maggy
       responses:
         204:
           description: User has been deleted
@@ -114,6 +117,7 @@ paths:
           type: string
           required: true
           description: The username to create the token for
+          x-example: maggy
       responses:
         200:
           description: Token created
@@ -129,6 +133,7 @@ paths:
           type: string
           required: true
           description: The username to delete the token for
+          x-example: maggy
       responses:
         204:
           description: Token deleted
@@ -146,6 +151,7 @@ paths:
           type: string
           required: true
           description: The username to query user info for
+          x-example: maggy
       responses:
         200:
           description: Radius attributes
@@ -177,6 +183,7 @@ definitions:
       extraProperties:
         type: object
         description: Extra radius properties
+        default: {}
   UserCreation:
     type: object
     required: ['username']
@@ -184,18 +191,24 @@ definitions:
       username:
         type: string
         description: The user identification to use
+        example: maggy
       extraProperties:
         type: object
         description: Extra radius properties to assign to the new user
+        example: {}
+    example:
+      username: maggy
   UserUpdate:
     type: object
     properties:
       username:
         type: string
         description: Updated user identification to assign to the user
+        example: maggy
       extraProperties:
         type: object
         description: Extra radius properties to update. *Will override all existing properties!*
+        example: {}
   TokenOnly:
     type: object
     required: ['token']
