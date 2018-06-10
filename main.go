@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/factorycampus/radau/api"
 	"github.com/gin-gonic/gin"
@@ -31,6 +32,11 @@ func createSchema(db *pg.DB) error {
 }
 
 func main() {
+	isDebug := os.Getenv("DEBUG")
+	if strings.ToLower(isDebug) != "true" && isDebug != "1" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	db := pg.Connect(&pg.Options{
 		Addr:       fmt.Sprintf("%s:5432", os.Getenv("DB_HOST")),
 		User:       os.Getenv("DB_USER"),

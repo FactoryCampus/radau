@@ -12,6 +12,7 @@ services:
       - .:/go/src/github.com/factorycampus/radau
       - go_cache:/go/src
     environment:
+      DEBUG: 1
       DB_HOST: db
       DB_USER: wifi
       DB_PASSWORD: wifi
