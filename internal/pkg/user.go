@@ -58,11 +58,9 @@ func (h *userHandler) getUsers(c *gin.Context) {
 		Limit(limit).
 		Offset(offset).
 		ForEach(func(u *User) error {
-			userList = append(userList, gin.H{
-				"username":        u.Username,
-				"extraProperties": u.ExtraProperties,
-				"token":           u.Token,
-			})
+			o := serializeUser(u)
+			o["token"] = u.Token
+			userList = append(userList, o)
 			return nil
 		})
 	c.JSON(200, gin.H{
