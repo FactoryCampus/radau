@@ -6,30 +6,10 @@ import (
 	"strings"
 
 	"github.com/factorycampus/radau/api"
+	"github.com/factorycampus/radau/migrations"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
-	"github.com/go-pg/pg/orm"
 )
-
-func createSchema(db *pg.DB) error {
-	tableOpts := &orm.CreateTableOptions{
-		Temp:        false,
-		IfNotExists: true,
-	}
-	if gin.IsDebugging() {
-		tableOpts = &orm.CreateTableOptions{
-			Temp: true,
-		}
-	}
-
-	for _, model := range []interface{}{(*api.User)(nil)} {
-		err := db.CreateTable(model, tableOpts)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 func main() {
 	isDebug := os.Getenv("DEBUG")
@@ -46,7 +26,7 @@ func main() {
 	})
 	defer db.Close()
 
-	err := createSchema(db)
+	err := migrations.EnsureCurrentSchema(db)
 	if err != nil {
 		panic(err)
 	}
