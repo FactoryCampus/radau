@@ -1,6 +1,8 @@
 package api
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 	"github.com/imdario/mergo"
@@ -15,6 +17,7 @@ type User struct {
 	Username        string            `sql:"username,notnull,unique"`
 	Token           string            `sql:"token"`
 	ExtraProperties map[string]string `sql:"extraProperties,hstore"`
+	LastQuery       time.Time         `sql:"lastquery"`
 }
 
 type UserCreation struct {
@@ -42,9 +45,13 @@ func serializeUser(user *User) gin.H {
 	o := gin.H{
 		"username":        user.Username,
 		"extraProperties": user.ExtraProperties,
+		"lastQuery":       user.LastQuery,
 	}
 	if user.ExtraProperties == nil {
 		o["extraProperties"] = map[string]string{}
+	}
+	if user.LastQuery.IsZero() {
+		o["lastQuery"] = ""
 	}
 	return o
 }

@@ -1,9 +1,13 @@
 package api
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 	"github.com/imdario/mergo"
+	"github.com/pkg/errors"
 )
 
 type radiusHandler struct {
@@ -27,6 +31,12 @@ func (h *radiusHandler) getRadiusInfo(c *gin.Context) {
 	if user.Token == "" {
 		c.Status(401)
 		return
+	}
+
+	user.LastQuery = time.Now()
+	err := h.db.Update(user)
+	if err != nil {
+		fmt.Printf("%s", errors.Wrap(err, "setting last query failed"))
 	}
 
 	radiusResponse := &map[string]string{}

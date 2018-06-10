@@ -184,6 +184,11 @@ definitions:
         type: object
         description: Extra radius properties
         default: {}
+      lastQuery:
+        type: string
+        format: date-time
+        description: ISO datetime of the last time the user got queried via `/radius`
+        default: ""
   UserCreation:
     type: object
     required: ['username']
