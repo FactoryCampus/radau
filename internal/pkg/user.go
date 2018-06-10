@@ -39,10 +39,14 @@ func InitUserHandler(router gin.IRouter, db *pg.DB) {
 }
 
 func serializeUser(user *User) gin.H {
-	return gin.H{
+	o := gin.H{
 		"username":        user.Username,
 		"extraProperties": user.ExtraProperties,
 	}
+	if user.ExtraProperties == nil {
+		o["extraProperties"] = map[string]string{}
+	}
+	return o
 }
 
 func (h *userHandler) getUsers(c *gin.Context) {
