@@ -25,6 +25,17 @@ type UserCreation struct {
 	ExtraProperties map[string]string `json:"extraProperties"`
 }
 
+type UserOutput struct {
+	Username        string            `json:"username"`
+	ExtraProperties map[string]string `json:"extraProperties"`
+	LastQuery       string            `json:"lastQuery"`
+}
+
+type UserOutputWithToken struct {
+	UserOutput
+	Token string `json:"token"`
+}
+
 func InitUserHandler(router gin.IRouter, db *pg.DB) {
 	h := &userHandler{&baseHandler{
 		db: db,
@@ -41,17 +52,14 @@ func InitUserHandler(router gin.IRouter, db *pg.DB) {
 	}
 }
 
-func serializeUser(user *User) gin.H {
-	o := gin.H{
-		"username":        user.Username,
-		"extraProperties": user.ExtraProperties,
-		"lastQuery":       user.LastQuery,
-	}
-	if user.ExtraProperties == nil {
-		o["extraProperties"] = map[string]string{}
+func serializeUser(user *User) UserOutput {
+	o := UserOutput{
+		Username:        user.Username,
+		ExtraProperties: user.ExtraProperties,
+		LastQuery:       user.LastQuery.String(),
 	}
 	if user.LastQuery.IsZero() {
-		o["lastQuery"] = ""
+		o.LastQuery = ""
 	}
 	return o
 }
@@ -60,13 +68,15 @@ func (h *userHandler) getUsers(c *gin.Context) {
 	limit := c.GetInt("limit")
 	offset := c.GetInt("offset")
 
-	userList := []gin.H{}
+	userList := []UserOutputWithToken{}
 	h.db.Model(&User{}).
 		Limit(limit).
 		Offset(offset).
 		ForEach(func(u *User) error {
-			o := serializeUser(u)
-			o["token"] = u.Token
+			o := UserOutputWithToken{
+				UserOutput: serializeUser(u),
+				Token:      u.Token,
+			}
 			userList = append(userList, o)
 			return nil
 		})
