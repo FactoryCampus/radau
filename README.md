@@ -32,10 +32,6 @@ docker run -d --name wifilogin \
     factorycampus/wifi-login-backend
 ```
 
-### Debian
-
-A debian package is available on the GitHub release page.
-
 ### Available Environment Variables
 
 - `API_KEY_MANAGEMENT` - API Key used for user management (`/user` and `/token`)
