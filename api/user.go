@@ -53,9 +53,16 @@ func InitUserHandler(router gin.IRouter, db *pg.DB) {
 }
 
 func serializeUser(user *User) UserOutput {
+	// Make a copy because go-pg will always give us the identical object
+	// and modify it in subsequent invocations, instead of yielding new rows.
+	extraProps := map[string]string{}
+	for k, v := range user.ExtraProperties {
+		extraProps[k] = v
+	}
+
 	o := UserOutput{
 		Username:        user.Username,
-		ExtraProperties: user.ExtraProperties,
+		ExtraProperties: extraProps,
 		LastQuery:       user.LastQuery.String(),
 	}
 	if user.LastQuery.IsZero() {
