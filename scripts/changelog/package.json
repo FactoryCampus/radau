@@ -1,0 +1,17 @@
+{
+  "name": "radau-changelog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "changelog.js",
+  "scripts": {
+    "generate": "conventional-changelog -n changelog.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "conventional-changelog-emoji": "^0.3.3",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "conventional-changelog-cli": "^2.0.1"
+  }
+}

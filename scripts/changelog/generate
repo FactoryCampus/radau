@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+BASEDIR=$(dirname $0)
+
+DOCKER_IMAGE=$(docker build -q $BASEDIR)
+
+MOUNT="$(cd $BASEDIR/../..; pwd)"
+
+docker run -it --rm -v $MOUNT:/src ${DOCKER_IMAGE} "$@"
