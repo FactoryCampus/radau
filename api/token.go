@@ -18,11 +18,11 @@ func InitTokenHandler(router gin.IRouter, db *pg.DB) {
 		db: db,
 	}}
 
-	group := router.Group("/token")
-	{
-		group.POST("/:username", h.createToken)
-		group.DELETE("/:username", h.deleteToken)
-	}
+	authManagementKey := os.Getenv("API_KEY_MANAGEMENT")
+	g := router.Group("", h.EnsureTokenOrKey(authManagementKey))
+
+	g.POST("/:username", h.createToken)
+	g.DELETE("/:username", h.deleteToken)
 }
 
 const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

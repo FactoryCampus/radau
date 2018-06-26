@@ -1,6 +1,7 @@
 package api
 
 import (
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -41,15 +42,18 @@ func InitUserHandler(router gin.IRouter, db *pg.DB) {
 		db: db,
 	}}
 
-	router.GET("/users", h.getUsers)
+	authManagementKey := os.Getenv("API_KEY_MANAGEMENT")
+	adminRoutes := router.Group("", HandleApiKeyAuth(authManagementKey))
 
-	group := router.Group("/user")
+	adminRoutes.GET("/users", h.getUsers)
+	adminUserGroup := adminRoutes.Group("/user")
 	{
-		group.POST("", h.createUser)
-		group.GET("/:username", h.getUser)
-		group.PUT("/:username", h.updateUser)
-		group.DELETE("/:username", h.deleteUser)
+		adminUserGroup.POST("", h.createUser)
+		adminUserGroup.PUT("/:username", h.updateUser)
+		adminUserGroup.DELETE("/:username", h.deleteUser)
 	}
+
+	router.GET("/user/:username", h.EnsureTokenOrKey(authManagementKey), h.getUser)
 }
 
 func serializeUser(user *User) UserOutput {

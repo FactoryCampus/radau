@@ -39,9 +39,11 @@ func main() {
 
 	r := gin.Default()
 
-	managementAuthed := r.Group("", api.HandleApiKeyAuth(authManagementKey))
-	api.InitUserHandler(managementAuthed, db)
-	api.InitTokenHandler(managementAuthed, db)
+	// Auth is handled individually per route
+	api.InitUserHandler(r, db)
+
+	// Auth is handled by TokenHandler
+	api.InitTokenHandler(r.Group("/token"), db)
 
 	radiusRoutes := r.Group("/radius", gin.BasicAuth(gin.Accounts{
 		"Radius": authRadiusKey,

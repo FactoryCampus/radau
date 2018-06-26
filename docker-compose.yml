@@ -19,6 +19,7 @@ services:
       DB_DATABASE: wifi
       API_KEY_MANAGEMENT: pYWVcrR4DmgCfkfmEte5nGNW
       API_KEY_RADIUS: u39fNShDX6fAeXtWY6bZWY9x
+      JWT_SECRET: $JWT_SECRET
     ports:
       - "8080:8080"
     networks:
