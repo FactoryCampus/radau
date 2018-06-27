@@ -7,9 +7,26 @@ import (
 
 	"github.com/factorycampus/radau/api"
 	"github.com/factorycampus/radau/migrations"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 )
+
+func initCORSConfig() cors.Config {
+	corsConfig := cors.DefaultConfig()
+
+	originConfig, hasCorsOrigins := os.LookupEnv("CORS_ORIGINS")
+	if !hasCorsOrigins {
+		corsConfig.AllowAllOrigins = true
+	} else {
+		corsConfig.AllowOrigins = strings.Split(originConfig, ",")
+	}
+
+	corsConfig.AddAllowHeaders("Authorization")
+	corsConfig.AllowCredentials = true
+
+	return corsConfig
+}
 
 func main() {
 	isDebug := os.Getenv("DEBUG")
@@ -38,6 +55,7 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Use(cors.New(initCORSConfig()))
 
 	// Auth is handled individually per route
 	api.InitUserHandler(r, db)
