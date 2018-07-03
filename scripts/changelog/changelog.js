@@ -24,15 +24,21 @@ const writerOpts = Q.all(
 
         switch(commit.type) {
             case 'sparkles':
+            case 'boom':
                 commit.group = "<!-- 1 -->:sparkles: Features";
                 break;
             case 'bug':
+            case 'ambulance':
                 commit.group = "<!-- 2 -->:bug: Bugfixes";
                 break;
+            case 'arrow_up':
+            case 'arrow_down':
             case 'zap':
             case 'lock':
             case 'lipstick':
-            case 'recycle':
+            case 'globe_with_meridians':
+            case 'wheelchair':
+            case 'children_crossing':
                 commit.group = "<!-- 3 -->:tada: Improvements"
                 break;
             case 'whale':
