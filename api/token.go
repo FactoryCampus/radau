@@ -25,7 +25,7 @@ func InitTokenHandler(router gin.IRouter, db *pg.DB) {
 	g.DELETE("/:username", h.deleteToken)
 }
 
-const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+const characters = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789"
 const charMask = 1<<6 - 1 // 64-bit mask
 
 func randString(n int) string {
