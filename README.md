@@ -22,14 +22,15 @@ The API allows for additional attributes to be associated to the user which will
 ### Docker
 
 ```bash
+docker network create wifi_db
 docker run -d --name wifilogin_db --network wifi_db \
     -e POSTGRES_USER=wifi -e POSTGRES_PASSWORD=wifi -e POSTGRES_DB=wifi \
     postgres
 docker run -d --name wifilogin \
     -e API_KEY_MANAGEMENT= -e API_KEY_RADIUS= \
     -e DB_HOST=wifilogin_db -e DB_USER=wifi -e DB_PASSWORD=wifi -e DB_DATABASE=wifi \
-    -p 8080:8080 --network wifi_db
-    factorycampus/wifi-login-backend
+    -p 8080:8080 --network wifi_db \
+    factorycampus/radau
 ```
 
 ### Available Environment Variables
