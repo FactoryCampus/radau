@@ -22,6 +22,9 @@ go_import_path: "../../src"
 install:
   - go get -v -d
 
+script:
+  - go build
+
 after_success:
   - scripts/build-docker.sh
 
