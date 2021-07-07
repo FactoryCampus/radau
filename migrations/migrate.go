@@ -10,10 +10,7 @@ import (
 func EnsureCurrentSchema(db *pg.DB) error {
 	var oldVersion, newVersion int64
 
-	err := db.RunInTransaction(func(tx *pg.Tx) (err error) {
-		oldVersion, newVersion, err = migrations.Run(tx, "")
-		return
-	})
+	oldVersion, newVersion, err := migrations.Run(db, "up")
 	if err != nil {
 		return err
 	}
