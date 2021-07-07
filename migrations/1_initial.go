@@ -9,11 +9,11 @@ type user struct {
 	ID              int
 	Username        string            `sql:"username,notnull,unique"`
 	Token           string            `sql:"token"`
-	ExtraProperties map[string]string `sql:"extraProperties,hstore"`
+	ExtraProperties map[string]string `sql:"extraProperties" pg:"hstore"`
 }
 
 func init() {
-	migrations.Register(func(db migrations.DB) error {
+	migrations.RegisterTx(func(db migrations.DB) error {
 		err := orm.CreateTable(db, &user{}, &orm.CreateTableOptions{
 			Temp:        false,
 			IfNotExists: true,
