@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/factorycampus/radau/api"
-	"github.com/factorycampus/radau/migrations"
+	"github.com/FactoryCampus/radau/api"
+	"github.com/FactoryCampus/radau/migrations"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
